@@ -7,8 +7,8 @@ export default {
 	plugins: [ buble() ],
 	external: external,
 	targets: [
-		{ dest: 'dist/rollup-plugin-babel.cjs.js', format: 'cjs' },
-		{ dest: 'dist/rollup-plugin-babel.es.js', format: 'es' }
+		{ dest: 'dist/rollup-plugin-babel-standalone.cjs.js', format: 'cjs' },
+		{ dest: 'dist/rollup-plugin-babel-standalone.es.js', format: 'es' }
 	],
 	sourceMap: true
 };

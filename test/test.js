@@ -31,13 +31,18 @@ function getLocation ( source, charIndex ) {
 
 const consoleWarn = console.warn;
 
+const defaultBabelOpts = {
+	babelrc: false,
+	presets: [ "es2015-rollup" ]
+}
+
 describe( 'rollup-plugin-babel', function () {
 	this.timeout( 15000 );
 
 	it( 'runs code through babel', function () {
 		return rollup.rollup({
 			entry: 'samples/basic/main.js',
-			plugins: [ babelPlugin() ]
+			plugins: [ babelPlugin(defaultBabelOpts) ]
 		}).then( function ( bundle ) {
 			var generated = bundle.generate();
 
@@ -50,7 +55,11 @@ describe( 'rollup-plugin-babel', function () {
 	it( 'adds helpers', function () {
 		return rollup.rollup({
 			entry: 'samples/class/main.js',
-			plugins: [ babelPlugin() ]
+			plugins: [ babelPlugin({
+				babelrc: false,
+				runtimeHelpers: true,
+				presets: [ "es2015-rollup" ],
+			})]
 		}).then( function ( bundle ) {
 			var generated = bundle.generate();
 			var code = generated.code;
@@ -65,7 +74,7 @@ describe( 'rollup-plugin-babel', function () {
 	it( 'does not add helpers unnecessarily', function () {
 		return rollup.rollup({
 			entry: 'samples/basic/main.js',
-			plugins: [ babelPlugin() ]
+			plugins: [ babelPlugin(defaultBabelOpts) ]
 		}).then( function ( bundle ) {
 			var generated = bundle.generate();
 			var code = generated.code;
@@ -77,7 +86,7 @@ describe( 'rollup-plugin-babel', function () {
 	it( 'does not add helpers when externalHelpers option is truthy', function () {
 		return rollup.rollup({
 			entry: 'samples/class/main.js',
-			plugins: [ babelPlugin({externalHelpers: true}) ]
+			plugins: [ babelPlugin(Object.assign({externalHelpers: true}, defaultBabelOpts)) ]
 		}).then( function ( bundle ) {
 			var generated = bundle.generate();
 			var code = generated.code;
@@ -91,7 +100,7 @@ describe( 'rollup-plugin-babel', function () {
 		return rollup.rollup({
 			entry: 'samples/exclusions/main.js',
 			plugins: [
-				babelPlugin({ exclude: '**/foo.js' })
+				babelPlugin(Object.assign({ exclude: '**/foo.js' }, defaultBabelOpts))
 			]
 		}).then( function ( bundle ) {
 			var generated = bundle.generate();
@@ -105,7 +114,7 @@ describe( 'rollup-plugin-babel', function () {
 	it( 'generates sourcemap by default', function () {
 		return rollup.rollup({
 			entry: 'samples/class/main.js',
-			plugins: [ babelPlugin() ]
+			plugins: [ babelPlugin(defaultBabelOpts) ]
 		}).then( function ( bundle ) {
 			var target = 'log';
 			var generated = bundle.generate({ sourceMap: true });
@@ -134,8 +143,11 @@ describe( 'rollup-plugin-babel', function () {
 	it( 'checks config per-file', function () {
 		return rollup.rollup({
 			entry: 'samples/checks/main.js',
-			plugins: [ babelPlugin() ]
-		})
+			plugins: [ babelPlugin({
+					babelrc: false,
+					presets: [ "es2015" ]
+				}) ]
+			})
 			.then( function () {
 				assert.ok( false, 'promise should not fulfil' );
 			})
@@ -197,7 +209,11 @@ describe( 'rollup-plugin-babel', function () {
 
 		return rollup.rollup({
 			entry: 'samples/duplicated-helpers-warning/main.js',
-			plugins: [ babelPlugin() ],
+			plugins: [ babelPlugin({
+				babelrc: false,
+				externalHelpers: true,
+				plugins: ["transform-es2015-classes"]
+			})],
 			onwarn: msg => messages.push( msg )
 		}).then( () => {
 			assert.deepEqual( messages, [

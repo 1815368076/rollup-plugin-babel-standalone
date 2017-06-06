@@ -1,5 +1,6 @@
+import './es2015-rollup.js';
 import { dirname } from 'path';
-import { buildExternalHelpers, transform } from 'babel-core';
+import { buildExternalHelpers, transform } from 'babel-standalone-rollup';
 import { createFilter } from 'rollup-pluginutils';
 import assign from 'object-assign';
 import preflightCheck from './preflightCheck.js';
