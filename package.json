@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-babel-standalone",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "Seamless integration between Rollup and Babel.",
   "main": "dist/rollup-plugin-babel-standalone.cjs.js",
   "jsnext:main": "dist/rollup-plugin-babel-standalone.es.js",
@@ -32,7 +32,7 @@
   "dependencies": {
     "babel-standalone-rollup": "^6.24.3",
     "object-assign": "^4.1.0",
-    "rollup-pluginutils": "^1.5.0"
+    "rollup-pluginutils": "^2.0.1"
   },
   "devDependencies": {
     "buble": "^0.14.2",
